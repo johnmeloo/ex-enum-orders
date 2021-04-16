@@ -2,6 +2,7 @@
 using ExFixaçãoEnum.Entities;
 using ExFixaçãoEnum.Entities.Enums;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace ExFixaçãoEnum.Entities
@@ -10,7 +11,7 @@ namespace ExFixaçãoEnum.Entities
     {
         public DateTime Date { get; set; }
         public OrderStatus Status { get; set; }
-        public List<OrderItem> Items { get; set; } = new List<OrderItem>();
+        public List<OrderItem> Items { get; private set; } = new List<OrderItem>();
 
         public Order()
         {
@@ -40,6 +41,22 @@ namespace ExFixaçãoEnum.Entities
                 sum += order.SubTotal();
             }
             return sum;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Order items:");
+            foreach (OrderItem i in Items)
+            {
+                sb.Append(i.Product.Name);
+                sb.Append(", $" + i.Product.Price.ToString("F2", CultureInfo.InvariantCulture));
+                sb.Append(", Quantity: " + i.Quantity);
+                sb.Append(", Subtotal: " + i.SubTotal());
+                sb.AppendLine();
+            }
+            sb.Append("$" + Total.ToString("F2", CultureInfo.InvariantCulture));
+            return sb.ToString();
         }
     }
 }
