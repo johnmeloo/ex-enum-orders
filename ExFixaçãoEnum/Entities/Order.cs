@@ -1,5 +1,4 @@
 ﻿using System;
-using ExFixaçãoEnum.Entities;
 using ExFixaçãoEnum.Entities.Enums;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,16 +10,18 @@ namespace ExFixaçãoEnum.Entities
     {
         public DateTime Date { get; set; }
         public OrderStatus Status { get; set; }
+        public Client Client { get; set; }
         public List<OrderItem> Items { get; private set; } = new List<OrderItem>();
 
         public Order()
         {
         }
 
-        public Order(DateTime date, OrderStatus status)
+        public Order(DateTime date, OrderStatus status, Client client)
         {
             Date = date;
             Status = status;
+            Client = client;
         }
 
         public void AddItem(OrderItem item)
@@ -33,7 +34,7 @@ namespace ExFixaçãoEnum.Entities
             Items.Remove(item);
         }
 
-        public double Total(double price, int quantity)
+        public double Total()
         {
             double sum = 0.0;
             foreach (OrderItem order in Items)
@@ -46,16 +47,15 @@ namespace ExFixaçãoEnum.Entities
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Order moment: " + Date.ToString("dd/MM/yyyy HH:mm:ss"));
+            sb.AppendLine("Order status: " + Status);
+            sb.AppendLine("Client: " + Client);
             sb.AppendLine("Order items:");
             foreach (OrderItem i in Items)
             {
-                sb.Append(i.Product.Name);
-                sb.Append(", $" + i.Product.Price.ToString("F2", CultureInfo.InvariantCulture));
-                sb.Append(", Quantity: " + i.Quantity);
-                sb.Append(", Subtotal: " + i.SubTotal());
-                sb.AppendLine();
+                sb.AppendLine(i.ToString());
             }
-            sb.Append("$" + Total.ToString("F2", CultureInfo.InvariantCulture));
+            sb.AppendLine("Total price: $" + Total().ToString("F2", CultureInfo.InvariantCulture));
             return sb.ToString();
         }
     }

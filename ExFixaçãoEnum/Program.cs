@@ -23,7 +23,7 @@ namespace ExFixaçãoEnum
             DateTime orderMoment = DateTime.Now;
             Console.Write("Status: ");
             OrderStatus status = Enum.Parse<OrderStatus>(Console.ReadLine());
-            Order order = new Order(date, status);
+            Order order = new Order(orderMoment, status, c1);
             Console.Write("How many items to this order? ");
             int N = int.Parse(Console.ReadLine());
             for (int i = 1; i <= N; i++)
@@ -36,22 +36,13 @@ namespace ExFixaçãoEnum
                 Product p = new Product(namep, price);
                 Console.Write("Quantity: ");
                 int quantity = int.Parse(Console.ReadLine());
-                OrderItem product = new OrderItem(p, quantity, price);
-                order.AddItem(product);
+                OrderItem list = new OrderItem(quantity, price, p);
+                order.AddItem(list);
 
             }
             Console.WriteLine();
             Console.WriteLine("ORDER SUMMARY:");
-            Console.WriteLine("Order moment: " + orderMoment.ToString("dd/MM/yyyy HH:mm:ss"));
-            Console.WriteLine("Order status: " + order.Status);
-            Console.WriteLine("Client: " + c1.Name + "(" + c1.BirthDate + ") - " + c1.Email);
             Console.WriteLine(order);
-
-
-
-
-
-
         }
     }
 }
